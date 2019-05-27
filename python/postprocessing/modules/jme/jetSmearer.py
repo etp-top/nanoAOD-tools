@@ -1,5 +1,6 @@
 import ROOT
-import math, os, tarfile, tempfile
+import math, os, tarfile
+from backports import tempfile
 import numpy as np
 ROOT.PyConfig.IgnoreCommandLineOptions = True
 
@@ -21,7 +22,8 @@ class jetSmearer(Module):
         self.jerInputArchivePath = os.environ['CMSSW_BASE'] + "/src/PhysicsTools/NanoAODTools/data/jme/"
         self.jerTag = jerInputFileName[:jerInputFileName.find('_MC_')+len('_MC')]
         self.jerArchive = tarfile.open(self.jerInputArchivePath+self.jerTag+".tgz", "r:gz")
-        self.jerInputFilePath = tempfile.mkdtemp()
+        self.jerInputFileDir = tempfile.TemporaryDirectory()
+        self.jerInputFilePath = self.jerInputFileDir.name
         self.jerArchive.extractall(self.jerInputFilePath)
         self.jerInputFileName = jerInputFileName
         self.jerUncertaintyInputFileName = jerUncertaintyInputFileName
@@ -49,6 +51,9 @@ class jetSmearer(Module):
         self.jerSF_and_Uncertainty = ROOT.PyJetResolutionScaleFactorWrapper(os.path.join(self.jerInputFilePath, self.jerUncertaintyInputFileName))
 
     def endJob(self):
+        pass
+
+    def endFile(self, inputFile, outputFile, inputTree, wrappedOutputTree):
         pass
 
         
