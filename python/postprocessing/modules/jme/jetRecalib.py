@@ -26,7 +26,7 @@ class jetRecalib(Module):
         # Text files are now tarred so must extract first into temporary directory (gets deleted during python memory management at script exit)
         self.jesArchive = tarfile.open(self.jesInputArchivePath+archive+".tgz", "r:gz")
         self.jesInputFileDir = tempfile.TemporaryDirectory()
-        self.jesInputFilePath = self.jerInputFileDir.name
+        self.jesInputFilePath = self.jesInputFileDir.name
         self.jesArchive.extractall(self.jesInputFilePath)
 
         self.jetReCalibrator = JetReCalibrator(globalTag, jetType , True, self.jesInputFilePath, calculateSeparateCorrections = False, calculateType1METCorrection  = False)
