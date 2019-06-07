@@ -120,3 +120,4 @@ void WeightCalculatorFromHistogram::fixLargeWeights(std::vector<float> &weights,
   } while ( sf > (1. + maxshift) );
   for(int i=0; i<(int)weights.size(); ++i) weights[i] = cropped[i];
 }
+
