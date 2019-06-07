@@ -1,9 +1,9 @@
 import ROOT
 import math, os,re, tarfile
-from backports import tempfile
 import numpy as np
 ROOT.PyConfig.IgnoreCommandLineOptions = True
 
+from PhysicsTools.NanoAODTools.postprocessing.framework.temporary_directory import TemporaryDirectory
 from PhysicsTools.NanoAODTools.postprocessing.framework.datamodel import Collection, Object
 from PhysicsTools.NanoAODTools.postprocessing.framework.eventloop import Module
 from PhysicsTools.NanoAODTools.postprocessing.tools import matchObjectCollection, matchObjectCollectionMultiple
@@ -63,7 +63,7 @@ class jetmetUncertaintiesProducer(Module):
         self.jesInputArchivePath = os.environ['CMSSW_BASE'] + "/src/PhysicsTools/NanoAODTools/data/jme/"
         # Text files are now tarred so must extract first into temporary directory (gets deleted during python memory management at script exit)
         self.jesArchive = tarfile.open(self.jesInputArchivePath+globalTag+".tgz", "r:gz")
-        self.jesInputFileDir = tempfile.TemporaryDirectory()
+        self.jesInputFileDir = TemporaryDirectory()
         self.jesInputFilePath = self.jesInputFileDir.name
         self.jesArchive.extractall(self.jesInputFilePath)
         

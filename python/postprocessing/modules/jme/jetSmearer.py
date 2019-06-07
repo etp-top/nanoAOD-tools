@@ -1,9 +1,9 @@
 import ROOT
 import math, os, tarfile
-from backports import tempfile
 import numpy as np
 ROOT.PyConfig.IgnoreCommandLineOptions = True
 
+from PhysicsTools.NanoAODTools.postprocessing.framework.temporary_directory import TemporaryDirectory
 from PhysicsTools.NanoAODTools.postprocessing.framework.datamodel import Collection, Object
 from PhysicsTools.NanoAODTools.postprocessing.framework.eventloop import Module
 from PhysicsTools.NanoAODTools.postprocessing.tools import matchObjectCollection, matchObjectCollectionMultiple
@@ -22,7 +22,7 @@ class jetSmearer(Module):
         self.jerInputArchivePath = os.environ['CMSSW_BASE'] + "/src/PhysicsTools/NanoAODTools/data/jme/"
         self.jerTag = jerInputFileName[:jerInputFileName.find('_MC_')+len('_MC')]
         self.jerArchive = tarfile.open(self.jerInputArchivePath+self.jerTag+".tgz", "r:gz")
-        self.jerInputFileDir = tempfile.TemporaryDirectory()
+        self.jerInputFileDir = TemporaryDirectory()
         self.jerInputFilePath = self.jerInputFileDir.name
         self.jerArchive.extractall(self.jerInputFilePath)
         self.jerInputFileName = jerInputFileName
