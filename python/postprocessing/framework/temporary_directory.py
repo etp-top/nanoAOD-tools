@@ -9,12 +9,24 @@ class TemporaryDirectory(object):
     This class is available in python +v3.2.
 
     """
+    def __init__(self):
+        self.name = tempfile.mkdtemp()
+
     def __enter__(self):
-        self.dir_name = tempfile.mkdtemp()
-        return self.dir_name
+        return self.name
 
     def __exit__(self, exc_type, exc_value, traceback):
+        self.cleanup()
+        
+
+    def __repr__(self):
+         return "<{} {!r}>".format(self.__class__.__name__, self.name)
+
+    def cleanup(self):
         try:
-            shutil.rmtree(self.dir_name)
+            shutil.rmtree(self.name)
         except:
             pass
+
+    def __del__(self):
+        self.cleanup()
